@@ -1,8 +1,8 @@
+# coding: utf-8
 import re
 import sys
 import codecs
 import string
-
 
 class Translator:
 
@@ -22,8 +22,11 @@ class Translator:
         for line in f:
             tokens = line.split()
             for token in tokens:
-                token = token.translate(None, string.punctuation).lower()
-            print '\n'
+                strippedToken = re.match(ur'([A-Za-záéíóúñ]+)', token, re.UNICODE)
+                if strippedToken is not None:
+                  strippedToken = strippedToken.group(0).lower()
+                  print strippedToken
+
 
 
 def main(args):
