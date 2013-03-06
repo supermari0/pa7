@@ -27,8 +27,6 @@ class Translator:
                     strippedToken = strippedToken.group('word').lower()
                     if strippedToken.encode('utf-8') in self.spanishEnglish:
                         print (self.spanishEnglish[strippedToken.encode('utf-8')]),
-                    else:
-                        print "invalid token: '" + strippedToken + "'"
             print ''
 
 
