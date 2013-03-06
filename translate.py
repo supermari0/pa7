@@ -4,6 +4,7 @@ import sys
 import codecs
 import string
 
+
 class Translator:
 
     def __init__(self):
@@ -18,15 +19,17 @@ class Translator:
 
     def translate(self, fileName):
         f = codecs.open(fileName, encoding='utf-8')
-        print string.punctuation
         for line in f:
             tokens = line.split()
             for token in tokens:
-                strippedToken = re.match(ur'([A-Za-záéíóúñ]+)', token, re.UNICODE)
+                strippedToken = re.match(u'\W*(?P<word>\w+)\W*', token, re.UNICODE)
                 if strippedToken is not None:
-                  strippedToken = strippedToken.group(0).lower()
-                  print strippedToken
-
+                    strippedToken = strippedToken.group('word').lower()
+                    if strippedToken.encode('utf-8') in self.spanishEnglish:
+                        print (self.spanishEnglish[strippedToken.encode('utf-8')]),
+                    else:
+                        print "invalid token: '" + strippedToken + "'"
+            print ''
 
 
 def main(args):
