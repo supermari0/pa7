@@ -15,7 +15,9 @@ class Translator:
         self.WordTag = namedtuple('WordTag', 'word tag')
         self.tagger = StanfordTagger('./postag/models/wsj-0-18-bidirectional-distsim.tagger',
                                      './postag/stanford-postagger-3.1.4.jar')
-        self.patterns = [(["NN", "RB", "VBD"], ["NN", "VBD", "RB"])]
+        self.patterns = [(["NN", "RB", "VBD"], ["NN", "VBD", "RB"]),
+                         (["VBD", "DT", "NNS"], ["DT", "NNS", "VBD"]),
+                         (["VBN", "DT", "NN"], ["DT", "NN", "VBN"])]
 
     def read_data(self, fileName):
         f = codecs.open(fileName, encoding='utf-8')
@@ -38,6 +40,17 @@ class Translator:
                 else:
                     yield token
 
+    def patternsMatch(self, text, pattern):
+        """
+        Check if the tags in text match the tags in pattern.
+        text is a list of WordTag tuples (word, tag)
+        pattern is a list of patterns.
+        patternsMatch([WordTag("a", "NN"), WordTag("b", "VB")], ["NN", "VB"]) -> True
+        patternsMatch([WordTag("a", "NN"), WordTag("b", "VB")], ["NN", "V*"]) -> True
+        patternsMatch([WordTag("a", "NN"), WordTag("b", "VB")], ["NN", "PP"]) -> False
+        """
+        return all([re.match(pair[1], pair[0].tag) for pair in zip(text, pattern)])
+
     def reorderPatterns(self, pattern, sub, text):
         """
         Look for pattern in text and reorder according to the rules in sub.
@@ -49,10 +62,11 @@ class Translator:
         """
         patternLen = len(pattern)
         for i, wordTag in enumerate(text[:-patternLen]):
-            if wordTag.tag == pattern[0] and [wt.tag for wt in text[i:i + patternLen]] == pattern:
-                mapping = dict((pattern[j], text[i + j]) for j in range(patternLen))
+            if wordTag.tag == pattern[0] and self.patternsMatch(text[i:i + patternLen], pattern):
+                # Create a pattern -> wordTag in text mapping
+                mapping = {pattern[j]: text[i + j] for j in range(patternLen)}
+                # Replace the existing sub-list with the reordered list
                 text[i:i + patternLen] = [mapping[p] for p in sub]
-        print text
 
     def translate(self, fileName):
         self.text = [word for word in self.tokenTranslate(fileName)]
@@ -63,6 +77,7 @@ class Translator:
             self.reorderPatterns(pattern[0], pattern[1], self.tagged)
             # if tag == 'NNS' and self.tagged[index - 1][1] == 'DT':
             #     print word
+        print [w.word for w in self.tagged]
 
 
 def main(args):
