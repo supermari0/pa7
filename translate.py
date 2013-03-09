@@ -13,11 +13,20 @@ class Translator:
         self.englishSpanish = {}
         self.text = []
         self.WordTag = namedtuple('WordTag', 'word tag')
-        self.tagger = StanfordTagger('./postag/models/wsj-0-18-bidirectional-distsim.tagger',
+        self.tagger = StanfordTagger('./postag/models/english-bidirectional-distsim.tagger',
                                      './postag/stanford-postagger-3.1.4.jar')
-        self.patterns = [(["NN", "RB", "VBD"], ["NN", "VBD", "RB"]),
-                         (["VBD", "DT", "NNS"], ["DT", "NNS", "VBD"]),
-                         (["VBN", "DT", "NN"], ["DT", "NN", "VBN"])]
+        self.patterns = [(["NN", "RB", "VBD"], ["NN", "VBD", "RB"]),    # Adverbs at end
+                         (["VBD", "DT", "NNS"], ["DT", "NNS", "VBD"]),  # Subject before verb
+                         (["VBN", "DT", "NN"], ["DT", "NN", "VBN"]),    # Subject before verb
+                         # Prep. after possesive
+                         # of close his beauty -> his beauty of close
+                         (["IN", "JJ", "PRP\$", "NN"], ["PRP\$", "NN", "IN", "JJ"]),
+                         # Prep before noun
+                         # water sweet -> water salt
+                         (["NN", "JJ"], ["JJ", "NN"]),
+                         (["VBN", "PRP"], ["PRP", "VBN"]),
+                         (["DT", "PRP", "VB*"], ["PRP", "VB*", "DT"])]
+        self.replacements = [("all the days", "always"), ("him same", "himself")]
 
     def read_data(self, fileName):
         f = codecs.open(fileName, encoding='utf-8')
@@ -73,11 +82,12 @@ class Translator:
         self.tagged = self.tagger.tag(self.text)
         # Convert to named tuples so we can access w.word, w.tag
         self.tagged = [self.WordTag(w[0], w[1]) for w in self.tagged]
+
         for pattern in self.patterns:
             self.reorderPatterns(pattern[0], pattern[1], self.tagged)
             # if tag == 'NNS' and self.tagged[index - 1][1] == 'DT':
             #     print word
-        print [w.word for w in self.tagged]
+        print self.tagged
 
 
 def main(args):
