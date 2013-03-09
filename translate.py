@@ -27,7 +27,8 @@ class Translator:
                          (["VBN", "PRP"], ["PRP", "VBN"]),
                          (["DT", "PRP", "VB*"], ["PRP", "VB*", "DT"])]
         self.replacements = [("all the days", "always"), ("him same",
-                              "himself"), ("by what", "why")]
+                              "himself"), ("by what", "why"), ("young",
+                              "youth")]
 
     def read_data(self, fileName):
         f = codecs.open(fileName, encoding='utf-8')
