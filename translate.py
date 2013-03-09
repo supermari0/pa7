@@ -77,6 +77,34 @@ class Translator:
                 # Replace the existing sub-list with the reordered list
                 text[i:i + patternLen] = [mapping[p] for p in sub]
 
+    def wordsMatch(self, englishWords, replacementWords):
+        return all([pair[0] == pair[1] for pair in zip(englishWords,
+            replacementWords)])
+
+    def makeReplacements(self, englishWords):
+        """
+        Make word replacements in self.replacements.
+        englishWords is a list of English words
+        """
+        for replacement in self.replacements:
+            wordsToReplace = replacement[0].split()
+            replacementLen = len(wordsToReplace)
+            for i in range(len(englishWords)):
+                # Check if we should do replacement here
+                if i + replacementLen < len(englishWords):
+                    if (englishWords[i] == wordsToReplace[0] and
+                        self.wordsMatch(englishWords[i:i + replacementLen],
+                        wordsToReplace)):
+                        replacementWords = replacement[1].split()
+
+                        # Insert new words at appropriate location
+                        for j in range(len(replacementWords)):
+                            englishWords.insert(i+j, replacementWords[j])
+                        # Remove old words
+                        for j in range(len(wordsToReplace)):
+                            englishWords.pop(i + len(replacementWords))
+        return englishWords
+
     def translate(self, fileName):
         self.text = [word for word in self.tokenTranslate(fileName)]
         self.tagged = self.tagger.tag(self.text)
@@ -87,6 +115,14 @@ class Translator:
             self.reorderPatterns(pattern[0], pattern[1], self.tagged)
             # if tag == 'NNS' and self.tagged[index - 1][1] == 'DT':
             #     print word
+
+        englishWords = []
+        for tag in self.tagged:
+            englishWords.append(tag[0])
+
+        englishWords = self.makeReplacements(englishWords)
+
+        print ' '.join(englishWords)
         print self.tagged
 
 
