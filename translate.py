@@ -26,9 +26,11 @@ class Translator:
                          (["NN", "JJ"], ["JJ", "NN"]),
                          (["VBN", "PRP"], ["PRP", "VBN"]),
                          (["DT", "PRP", "VB*"], ["PRP", "VB*", "DT"])]
-        self.replacements = [("all the days", "always"), ("him same",
-                              "himself"), ("by what", "why"), ("young",
-                              "youth")]
+        self.replacements = [("all the days", "always"),
+                             ("him same", "himself"),
+                             ("by what", "why"),
+                             ("young", "youth"),
+                             ("no is", "is not")]
 
     def read_data(self, fileName):
         f = codecs.open(fileName, encoding='utf-8')
@@ -81,7 +83,7 @@ class Translator:
 
     def wordsMatch(self, englishWords, replacementWords):
         return all([pair[0] == pair[1] for pair in zip(englishWords,
-            replacementWords)])
+                                                       replacementWords)])
 
     def makeReplacements(self, englishWords):
         """
@@ -91,20 +93,15 @@ class Translator:
         for replacement in self.replacements:
             wordsToReplace = replacement[0].split()
             replacementLen = len(wordsToReplace)
-            for i in range(len(englishWords)):
+            for i in range(len(englishWords) - replacementLen):
                 # Check if we should do replacement here
-                if i + replacementLen < len(englishWords):
-                    if (englishWords[i] == wordsToReplace[0] and
-                        self.wordsMatch(englishWords[i:i + replacementLen],
-                        wordsToReplace)):
-                        replacementWords = replacement[1].split()
+                if (englishWords[i] == wordsToReplace[0] and
+                    self.wordsMatch(englishWords[i:i + replacementLen],
+                                    wordsToReplace)):
+                    replacementWords = replacement[1].split()
 
-                        # Insert new words at appropriate location
-                        for j in range(len(replacementWords)):
-                            englishWords.insert(i+j, replacementWords[j])
-                        # Remove old words
-                        for j in range(len(wordsToReplace)):
-                            englishWords.pop(i + len(replacementWords))
+                    # Insert new words at appropriate location
+                    englishWords[i:i + replacementLen] = replacementWords
         return englishWords
 
     def translate(self, fileName):
@@ -125,7 +122,7 @@ class Translator:
         englishWords = self.makeReplacements(englishWords)
 
         print ' '.join(englishWords)
-        print self.tagged
+        # print self.tagged
 
 
 def main(args):
