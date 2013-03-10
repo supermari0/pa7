@@ -104,25 +104,37 @@ class Translator:
                     englishWords[i:i + replacementLen] = replacementWords
         return englishWords
 
+    def marshallSentences(self, sentences):
+        """
+        Make stuff a little prettier. Capitalize beginnings of sentences,
+        removes spaces at the end.
+        """
+        result = []
+        for sentence in sentences:
+            sentence = sentence.strip()
+            if sentence:
+                sentence = sentence[0].upper() + sentence[1:]
+                sentence += '.'
+                result.append(sentence)
+        return result
+
     def translate(self, fileName):
         self.text = [word for word in self.tokenTranslate(fileName)]
-        self.tagged = self.tagger.tag(self.text)
+        self.text = ' '.join(self.text).split('.')
+        self.tagged = self.tagger.tag([sentence + '.' for sentence in self.text])
         # Convert to named tuples so we can access w.word, w.tag
         self.tagged = [self.WordTag(w[0], w[1]) for w in self.tagged]
-
+        print 'BEFORE:'
+        print self.tagged
         for pattern in self.patterns:
             self.reorderPatterns(pattern[0], pattern[1], self.tagged)
-            # if tag == 'NNS' and self.tagged[index - 1][1] == 'DT':
-            #     print word
-
-        englishWords = []
-        for tag in self.tagged:
-            englishWords.append(tag[0])
-
+        print 'AFTER'
+        print self.tagged
+        englishWords = [tag[0] for tag in self.tagged]
         englishWords = self.makeReplacements(englishWords)
 
-        print ' '.join(englishWords)
-        # print self.tagged
+        sentences = ' '.join(englishWords).split('.')
+        print ' '.join(self.marshallSentences(sentences))
 
 
 def main(args):
