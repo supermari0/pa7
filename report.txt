@@ -1,0 +1,76 @@
+- The F language you're working with and any general observations about it,
+- including particular challenges in translating your choice of F language to
+- English (relative to other possible choices for F).
+
+- Your original test document (10 sentences).
+
+El Alquimista cogió un libro que alguien de la caravana había traído. El volumen
+no tenía tapas, pero consiguió identificar a su autor: Oscar Wilde. Mientras
+hojeaba sus páginas encontró una historia sobre Narciso.
+
+El Alquimista conocía la leyenda de Narciso, un hermoso joven que todos los días
+iba a contemplar su propia belleza en un lago. Estaba tan fascinado consigo
+mismo que un día se cayó dentro del lago y se murió ahogado. En el lugar donde
+cayó nació una flor, a la que llamaron narciso.
+
+Pero no era así como Oscar Wilde acababa la historia. Él decía que, cuando
+Narciso murió, llegaron las Oréades - diosas del bosque - y vieron el lago
+transformado, de un lago de agua dulce que era, en un cántaro de lágrimas
+saladas.
+
+-¿Por qué lloras?- le preguntaron las Oréades.
+-Lloro por Narciso- repuso el lago.
+-¡Ah, no nos asombra que llores por Narciso!- prosiguieron ellas-. Al fin
+y al cabo, a pesar de que nosotras siempre corríamos tras él por el bosque, tú
+eras el único que tenía la oportunidad de contemplar de cerca su belleza.
+
+- The output of your system.
+
+the alchemist took a book that someone of the caravan had brought . the volume
+had no lids , but got identify at his author : oscar wilde . while browsing
+their pages found a history on narcissus . the alchemist knew the legend of
+narcissus , a beautiful youth that always was at contemplate his own beauty in a
+lake . was so fascinated with himself that a day is fell down within of lake and
+is died suffocate . in the place where fell down a flower born , at the that
+called narcissus . but is not like this like oscar wilde end the history . he
+said that , when narcissus died , the goddesses arrived - goddesses of forest -
+and viewed the lake converted , of a lake of sweet water that is , in a pitcher
+of tears salt . why cry ?- the the goddesses asked . cry by narcissus - said the
+lake . ah , us astonishes no that weep by narcissus !- they continued -. to the
+final and to the end , at weight of that us always ran after he by the forest ,
+you was the only that had the opportunity of contemplate his beauty of close .
+
+- For each rule you create, a description of what it was supposed to do, what
+- differences between Language F and English it was supposed to fix. Make sure
+- you give a good example of the use of the rules in your running of your code.
+
+- Error analysis, including ideas for how additional work might fix your
+- remaining errors.
+
+- The output of Google Translate.
+
+The Alchemist picked up a book that someone in the caravan had brought. the
+volume had no covers, but managed to identify the author: Oscar Wilde. while
+leafed through its pages he found a story about Narcissus.
+
+The Alchemist knew the legend of Narcissus, a beautiful youth all days would
+contemplate his own beauty in a lake. I was so fascinated himself that one day
+he fell into the lake and drowned. in the where was born a flower fell, which
+they called narcissus.
+
+But that was not how the story ended Oscar Wilde. He said that when Narcissus
+died, arrived Oreads - goddesses of the forest - and saw the lake transformed, a
+freshwater lake that was in a jar of tears salty.
+
+- Why are you crying? - Asked the Oreads. -I weep for Narcissus replied the
+lake. - Oh, no wonder you weep for Narcissus! - Continued them. Ultimately After
+all, even though we always ran after him through the woods, you were the only
+one who had the opportunity to look closely at their beauty.
+
+- Comparative analysis for Google Translate, including where your system and
+- Google agree, what your system does better than Google Translate, and what
+- Google Translate does better than your system.
+
+- A brief statement on the responsibilities of different members of the team.
+- (Team members will normally get the same grade, but we reserve the right to
+- differentiate in egregious cases.)
