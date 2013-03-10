@@ -26,23 +26,44 @@ eras el único que tenía la oportunidad de contemplar de cerca su belleza.
 
 - The output of your system.
 
-the alchemist took a book that someone of the caravan had brought . the volume
-had no lids , but got identify at his author : oscar wilde . while browsing
-their pages found a history on narcissus . the alchemist knew the legend of
-narcissus , a beautiful youth that always was at contemplate his own beauty in a
-lake . was so fascinated with himself that a day is fell down within of lake and
-is died suffocate . in the place where fell down a flower born , at the that
-called narcissus . but is not like this like oscar wilde end the history . he
-said that , when narcissus died , the goddesses arrived - goddesses of forest -
-and viewed the lake converted , of a lake of sweet water that is , in a pitcher
-of tears salt . why cry ?- the the goddesses asked . cry by narcissus - said the
-lake . ah , us astonishes no that weep by narcissus !- they continued -. to the
-final and to the end , at weight of that us always ran after he by the forest ,
-you was the only that had the opportunity of contemplate his beauty of close .
+The alchemist took a book that someone of the caravan had brought. The volume
+had no lids , but got identify at his author : oscar wilde. While browsing their
+pages found a history on narcissus. The alchemist knew the legend of narcissus ,
+a beautiful youth that always was at contemplate his own beauty in a lake. Was
+so fascinated with himself that a day is fell down within of lake and is died
+suffocate. In the place where fell down a flower born , at the that called
+narcissus. But is not like this like oscar wilde end the history. He said that ,
+when narcissus died , the goddesses arrived - goddesses of forest - and viewed
+the lake converted , of a lake of sweet water that is , in a pitcher of tears
+salt. Why cry ?- the the goddesses asked. Cry by narcissus - said the lake. Ah ,
+us astonishes no that weep by narcissus !- they continued -. To the final and to
+the end , at weight of that us always ran after he by the forest , you was the
+only that had the opportunity of contemplate his beauty of close.
 
 - For each rule you create, a description of what it was supposed to do, what
 - differences between Language F and English it was supposed to fix. Make sure
 - you give a good example of the use of the rules in your running of your code.
+
+["NN", "RB", "VBD"]  -> ["NN", "VBD", "RB"] 
+Sentence to fix: "The volume no had lids" 
+Correct sentence: "The volume had no lids"
+Meaning of rule: This rule makes sure that the we move adverbs after the verbs that they modify. In the example above, the original sentence is "El volumen
+no tenía tapas," where "no" comes before "tenia." In english, however, "no had"
+is incorrect and "had no" (or perhaps more generally "had not") is the correct wording.
+["VBD", "DT", "NNS"] -> ["DT", "NNS", "VBD"]  # Subject before verb
+Sentence to fix: "asked the goddesses"
+Correct sentence: "the goddesses asked"
+Meaning of rule: Although both sentences qualify as correct English, we generally want to subject to come before the verb. This rule attempts to capture this grammatical model by moving the determiner (in this case "the") to the front of the sentence and reordering the subject and verb.
+
+["VBN", "DT", "NN"]  -> ["DT","NN", "VBN"]    # Subject before verb 
+Sentence to fix: "born a flower"
+Correct sentence: "a flower born"
+Meaning of rule: This is another rule that is supposed to reorder subjects and verbs in our sentences. A direct translation of the Spanish text gives us "born a flower," which is not as fluent as "a flower born" or perhaps even "a flower was born". We make this reordering by putting the noun in front of the verb when we see a determiner between them. 
+# Prep. after possesive # of close his
+beauty -> his beauty of close     ["IN", "JJ", "PRP\$", "NN"] -> ["PRP\$", "NN",
+"IN", "JJ"] # Prep before noun # water sweet -> water salt     ["NN", "JJ"] ->
+["JJ", "NN"]     ["VBN", "PRP"] -> ["PRP", "VBN"]     ["DT", "PRP", "VB*"] ->
+["PRP", "VB*", "DT"]
 
 - Error analysis, including ideas for how additional work might fix your
 - remaining errors.
