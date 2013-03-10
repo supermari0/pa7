@@ -53,20 +53,73 @@ is incorrect and "had no" (or perhaps more generally "had not") is the correct w
 ["VBD", "DT", "NNS"] -> ["DT", "NNS", "VBD"]  # Subject before verb
 Sentence to fix: "asked the goddesses"
 Correct sentence: "the goddesses asked"
-Meaning of rule: Although both sentences qualify as correct English, we generally want to subject to come before the verb. This rule attempts to capture this grammatical model by moving the determiner (in this case "the") to the front of the sentence and reordering the subject and verb.
+Meaning of rule: Although both sentences qualify as correct English, we
+generally want to subject to come before the verb. This rule attempts to 
+capture this grammatical model by moving the determiner (in this case "the") 
+to the front of the sentence and reordering the subject and verb.
 
 ["VBN", "DT", "NN"]  -> ["DT","NN", "VBN"]    # Subject before verb 
 Sentence to fix: "born a flower"
 Correct sentence: "a flower born"
-Meaning of rule: This is another rule that is supposed to reorder subjects and verbs in our sentences. A direct translation of the Spanish text gives us "born a flower," which is not as fluent as "a flower born" or perhaps even "a flower was born". We make this reordering by putting the noun in front of the verb when we see a determiner between them. 
+Meaning of rule: This is another rule that is supposed to reorder subjects and 
+verbs in our sentences. A direct translation of the Spanish text gives us 
+"born a flower," which is not as fluent as "a flower born" or perhaps even "a 
+flower was born". We make this reordering by putting the noun in front of the 
+verb when we see a determiner between them. 
+
 # Prep. after possesive # of close his
-beauty -> his beauty of close     ["IN", "JJ", "PRP\$", "NN"] -> ["PRP\$", "NN",
-"IN", "JJ"] # Prep before noun # water sweet -> water salt     ["NN", "JJ"] ->
-["JJ", "NN"]     ["VBN", "PRP"] -> ["PRP", "VBN"]     ["DT", "PRP", "VB*"] ->
-["PRP", "VB*", "DT"]
+beauty -> his beauty of close     
+["IN", "JJ", "PRP\$", "NN"] -> ["PRP\$", "NN", "IN", "JJ"]
+Sentence to fix: "of close his beauty"
+Correct sentence: "his beauty of close"
+Meaning of rule: We noticed that our translation put prepositions in front of 
+possessives in several places. Thus, the Spanish sentence "contemplar de cerca 
+su belleza" became "contemplate of close his beauty." A more natural 
+translation would move "of close", the preposition, to the end of the sentence 
+to get "his beauty of close."
+
+# Prep before noun # water sweet -> water salt
+["NN", "JJ"] -> ["JJ", "NN"]
+Sentence to fix: "water sweet"
+Correct sentence: "sweet water"
+Meaning of rule: With this rule, we wanted to account for the difference 
+between Spanish and English noun/adjective pairs. Spanish puts the noun before 
+the adjective, while English reverses the order. We wrote this rule to obtain 
+a correct order in our translation, which captured the "water sweet"/"sweet 
+water" case above. Note that the same pattern occurs in other sentences, most 
+notably in "tears salt" which should have been "salt(y) tears." The POS 
+tagger, however, classified both words as nouns in that particular sentence, 
+so there was no easy way for us to use reordering to correct the sentence.
+
+["VBN", "PRP"] -> ["PRP", "VBN"]
+Sentence to fix: "continued they"
+Correct sentence: "they continued"
+Meaning of rule: This is anoter case where the rules for word order around 
+verbs are different in Spanish. "prosiguieron ellas" is literally translated 
+to "continued they," but in English, the personal pronoun should come before 
+the verb.
+
+["DT", "PRP", "VB*"] -> ["PRP", "VB*", "DT"]
+Sentence to fix: ""
+Correct sentence: ""
+Meaning of rule: 
 
 - Error analysis, including ideas for how additional work might fix your
 - remaining errors.
+
+Although we have a decent translation of the beginning of The Alchemist, there 
+are still several issues we could fix. For example, the subject is often 
+implicit, which confuses our translation mechanism. "While browsing their 
+pages found a history" should clearly have a "he" between "pages" and "found." 
+We might be able fix this problem if we can build a more intelligent system to 
+detect who or what is the subject of a given sentence. For instance, we could 
+detect that the subject in the previous sentence is the alchemist and encode 
+that at least a "he" or "she" would lead to a better translation than "they" 
+or nothing. The sentence also provides a good example of why such a detection 
+might be difficult. It is already somewhat ambiguous whether the sentence is 
+referring to the book or the alchemist, and correctly interpreting this 
+ambiguity is tricky. In fact, even Google Translate has problems correctly 
+identifying the subject.
 
 - The output of Google Translate.
 
