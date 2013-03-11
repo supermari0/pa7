@@ -124,12 +124,10 @@ class Translator:
         self.tagged = self.tagger.tag([sentence + '.' for sentence in self.text])
         # Convert to named tuples so we can access w.word, w.tag
         self.tagged = [self.WordTag(w[0], w[1]) for w in self.tagged]
-        print 'BEFORE:'
-        print self.tagged
+
         for pattern in self.patterns:
             self.reorderPatterns(pattern[0], pattern[1], self.tagged)
-        print 'AFTER'
-        print self.tagged
+
         englishWords = [tag[0] for tag in self.tagged]
         englishWords = self.makeReplacements(englishWords)
 

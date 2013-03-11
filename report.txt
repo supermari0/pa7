@@ -1,6 +1,19 @@
+Rasmus Rygaard
+Mario Villaplana
+CS124 Project 7 - Machine Translation
+
 - The F language you're working with and any general observations about it,
 - including particular challenges in translating your choice of F language to
 - English (relative to other possible choices for F).
+
+We're working on translating from Spanish to English. Some challenges in
+translating Spanish include missing subjects ("Fue al lago" means "he/she went
+to the lake", even though no word for "he" or "she" is present in Spanish) and 
+translating object markers ("le pregunataron" means "they asked him" even
+though the word "him" is not present in Spanish). In a larger translation,
+translating idiomatic phrases like "tengo hambre" (literally, "I have hunger")
+may add difficulty, although there weren't many idiomatic phrases in our
+example.
 
 - Your original test document (10 sentences).
 
@@ -50,6 +63,7 @@ Correct sentence: "The volume had no lids"
 Meaning of rule: This rule makes sure that the we move adverbs after the verbs that they modify. In the example above, the original sentence is "El volumen
 no tenía tapas," where "no" comes before "tenia." In english, however, "no had"
 is incorrect and "had no" (or perhaps more generally "had not") is the correct wording.
+
 ["VBD", "DT", "NNS"] -> ["DT", "NNS", "VBD"]  # Subject before verb
 Sentence to fix: "asked the goddesses"
 Correct sentence: "the goddesses asked"
@@ -99,10 +113,54 @@ verbs are different in Spanish. "prosiguieron ellas" is literally translated
 to "continued they," but in English, the personal pronoun should come before 
 the verb.
 
+
 ["DT", "PRP", "VB*"] -> ["PRP", "VB*", "DT"]
-Sentence to fix: ""
-Correct sentence: ""
-Meaning of rule: 
+Sentence to fix: "no us astonishes that weep by narcissus"
+Correct sentence: "us astonishes no that weep by narcissus"
+Meaning of rule: This rule ensures that determiners followed by a prepositional
+phrase and a verb make the determiner come after the verb. In the example here,
+"no nos asombra" literally means "it doesn't astonish us", but the limitation
+on our ability to have 1 translation per word means that we had to keep "no"
+instead of replacing it with "doesn't". We opted to make the sentence sound a
+bit like Yoda-speak ("us astonishes no[t]") rather than allow the reader to
+interpret the sentence as something like "no, us astonishes..." (the Godesses
+*were* astonished...), which has incorrect semantics.
+
+"all the days" -> "always"
+Sentence to fix: "... a beautiful youth that all the days was at contemplate
+..."
+Correct sentence: "... a beautiful youth that always was at contemplate ..."
+Meaning of rule: "Todos los días," literally meaning "all the days," is an
+idiomatic expression in Spanish that means "always."
+
+"him same" -> "himself" 
+Sentence to fix: "Was so fascinated with him same ..."
+Correct sentence: "Was so fascinated with himsefl ..." 
+Meaning of rule: "Consigo mismo" literally means "himself", but "mismo"
+translated separately from "consigo" using the dictionary translation of each
+word individually yields the incorrect phrase.
+
+"by what" -> "why"
+Sentence to fix: "By what cry ?"
+Correct sentence: "Why cry ?"
+Meaning of rule: "Por qué" translated separately yields the phrase "by what",
+but "por qué" always means "why" in Spanish.
+
+"young" -> "youth"
+Sentence to fix: "... a beautiful young that ..."
+Correct sentence: "... a beautiful youth that ..."
+Meaning of rule: "Jóven" can be used as an adjective or noun in Spanish. In
+this case, it means the noun "youth". In general, we'd want to be able to
+detect whether the text means "young" or "youth" by running a POS tagger over
+the Spanish text, but the limitations of the assignment meant we couldn't
+easily do that.
+
+"no is" -> "is not"
+Sentence to fix: "... no is like this ..."
+Correct sentence: "... is not like this ..."
+Meaning of rule: "No es" literally means "is not", but we didn't want to write
+a general rule moving determiners after verbs since that may incorrectly
+translate something like "ambos fueron" to "were both" instead of "both were".
 
 - Error analysis, including ideas for how additional work might fix your
 - remaining errors.
@@ -145,6 +203,38 @@ one who had the opportunity to look closely at their beauty.
 - Google agree, what your system does better than Google Translate, and what
 - Google Translate does better than your system.
 
+Both our system and Google generally agree on the first 3 sentences.
+
+Our system does slightly better than Google translate on sentences 4 and 5;
+sentence 4 for Google Translate gives the reader the impression that the
+author's fascination caused Narcissus to drown in the lake. Google's
+translation of sentence 5 incorrectly gives the impression that a flower fell
+down where Narcissus was born, when in reality a flower was born where
+Narcissus fell. 
+
+Our translator does slightly better on te next 2 sentences as
+well. "The story ended Oscar Wilde" literally means that the story killed Oscar
+Wilde, which is nonsensical. Our translation, "But is not like this like oscar
+wilde end the history," although less grammatically sensible, doesn't give the
+impression that Oscar Wilde was killed by a story. Google's translation of the
+next sentence, "... saw the lake transformed, a freshwater lake that was in a
+jar of tears salty," literally means that some lake which was in a jar of salty
+tears was transformed. Our translation, "... viewed the lake converted, of a
+lake of sweet water that is, in a pitcher of tears salt," although once again
+less grammatical than Google's translation, gives the impression that the
+lake's water was transformed into tears, which is the correct interpretation.
+
+Google's translation wins for the remainder of the text. The main issue in this
+section was inferring subjects and recognizing idiomatic expressions like "at
+weight" changing to "even though", which our system does not do well generally.
+
 - A brief statement on the responsibilities of different members of the team.
 - (Team members will normally get the same grade, but we reserve the right to
 - differentiate in egregious cases.)
+
+Rasmus -- Wrote pattern reordering system and grammatical patterns, code that
+replaces Spanish words with English words from the dictionary, part of report
+
+Mario -- Wrote code to do word replacement and some word replacement rules,
+code to strip tokens of punctuation before translating from dictionary, part of
+report
